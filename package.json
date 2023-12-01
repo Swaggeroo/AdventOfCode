@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/app.ts",
-    "day1": "ts-node src/day1_1.ts"
+    "day1_1": "ts-node src/day1_1.ts",
+    "day1_2": "ts-node src/day1_2.ts"
   },
   "author": "",
   "license": "ISC",
