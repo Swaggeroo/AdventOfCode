@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/app.ts",
     "day1_1": "ts-node src/2023/1/day1_1.ts",
-    "day1_2": "ts-node src/2023/1/day1_2.ts"
+    "day1_2": "ts-node src/2023/1/day1_2.ts",
+    "day2_1": "ts-node src/2023/2/day2_1.ts",
+    "day2_2": "ts-node src/2023/2/day2_2.ts"
   },
   "author": "",
   "license": "ISC",
