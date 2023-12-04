@@ -11,7 +11,9 @@
     "day2_1": "ts-node src/2023/2/day2_1.ts",
     "day2_2": "ts-node src/2023/2/day2_2.ts",
     "day3_1": "ts-node src/2023/3/day3_1.ts",
-    "day3_2": "ts-node src/2023/3/day3_2.ts"
+    "day3_2": "ts-node src/2023/3/day3_2.ts",
+    "day4_1": "ts-node src/2023/4/day4_1.ts",
+    "day4_2": "ts-node src/2023/4/day4_2.ts"
   },
   "author": "",
   "license": "ISC",
