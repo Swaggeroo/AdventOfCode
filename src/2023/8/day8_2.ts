@@ -19,56 +19,22 @@ getDayData(2023,8).then((result: string) => {
     steps.sort(Step.compare);
 
     let currentSteps: Step[] = Step.getNodesEndingWithA(steps);
-    let loops: Loops[] = [];
+    let loopMultiply: LoopMultiply[] = [];
 
-    for (let i: number = 0; i < currentSteps.length; i++) {
-        let stepsSeen: StepPosition[] = [];
-        let looping: boolean = true;
-        let stepsTillZ: number = 0;
-        while (looping){
-            let instructionList: string[] = instructions.split('');
-            for (let u = 0; u < instructionList.length && looping; u++) {
-                let instruction: string = instructionList[u];
-                for (let j: number = 0; j < stepsSeen.length; j++) {
-                    if(stepsSeen[j].step === currentSteps[i] && stepsSeen[j].instructionPosition === u){
-                        loops.push({
-                            startOfLoop: j,
-                            loopLength: stepsSeen.length - j,
-                            stepsTillZ: stepsTillZ
-                        });
-                        looping = false;
-                        break;
-                    }
-                }
-
-                stepsSeen.push({
-                    step: currentSteps[i],
-                    instructionPosition: u
-                });
-
-                if (instruction === 'L') {
-                    currentSteps[i] = Step.search(steps, currentSteps[i].left)!;
-                }else if(instruction === 'R'){
-                    currentSteps[i] = Step.search(steps, currentSteps[i].right)!;
-                }
-            }
-        }
+    for (let currentStepIndex: number = 0; currentStepIndex < currentSteps.length; currentStepIndex++) {
+        loopMultiply.push(new LoopMultiply(
+            Loop.findLoop(currentSteps[currentStepIndex], steps, instructions),
+            1
+        ));
     }
 
-    let loopMultiply: LoopMultiply[] = [];
-    loops.forEach((loop: Loops) => {
-        loopMultiply.push({
-            Loop: loop,
-            multiply: 1
-        });
-    });
-
-    console.log("Starting loop multiply");
+    //Find LCM of all loopMultiply values
     while (true){
-        let smallest = Number.MAX_VALUE;
-        let smallestIndex = -1;
+        let smallest: number = Number.MAX_VALUE;
+        let smallestIndex: number = -1;
+
         for (let i: number = 0; i < loopMultiply.length; i++) {
-            let value: number = (loopMultiply[i].Loop.loopLength * loopMultiply[i].multiply) + loopMultiply[i].Loop.stepsTillZ;
+            let value: number = loopMultiply[i].getValue();
             if(value < smallest){
                 smallest = value;
                 smallestIndex = i;
@@ -77,18 +43,10 @@ getDayData(2023,8).then((result: string) => {
 
         loopMultiply[smallestIndex].multiply++;
 
-        let allEqual: boolean = true;
-        let firstValue: number = (loopMultiply[0].Loop.loopLength * loopMultiply[0].multiply) + loopMultiply[0].Loop.stepsTillZ;
-        for (let i: number = 1; i < loopMultiply.length; i++) {
-            let value: number = (loopMultiply[i].Loop.loopLength * loopMultiply[i].multiply) + loopMultiply[i].Loop.stepsTillZ;
-            if(value !== firstValue){
-                allEqual = false;
-                break;
-            }
-        }
+        let values: Set<number> = new Set(loopMultiply.map((loopMultiply: LoopMultiply) => loopMultiply.getValue()));
 
-        if(allEqual){
-            console.log(firstValue);
+        if(values.size === 1){
+            console.log(loopMultiply[0].getValue());
             return;
         }
     }
@@ -99,15 +57,52 @@ interface StepPosition {
     instructionPosition: number;
 }
 
-interface Loops {
-    startOfLoop: number;
-    loopLength: number;
-    stepsTillZ: number;
+class LoopMultiply {
+    Loop: Loop;
+    multiply: number;
+
+    constructor(Loop: Loop, multiply: number){
+        this.Loop = Loop;
+        this.multiply = multiply;
+    }
+
+    getValue(): number {
+        return (this.Loop.loopLength * this.multiply) + this.Loop.stepsTillZ;
+    }
 }
 
-interface LoopMultiply {
-    Loop: Loops;
-    multiply: number;
+class Loop{
+    loopLength: number;
+    stepsTillZ: number;
+
+    constructor(loopLength: number, stepsTillZ: number){
+        this.loopLength = loopLength;
+        this.stepsTillZ = stepsTillZ;
+    }
+
+    static findLoop(firstStep: Step, steps: Step[], instructions: string): Loop{
+        let stepsSeen: StepPosition[] = [];
+        let stepsTillZ: number = 0;
+        while (true){
+            let instructionList: string[] = instructions.split('');
+            for (let instructionIndex = 0; instructionIndex < instructionList.length; instructionIndex++) {
+                let stepsTillLoop:number = stepsSeen.findIndex((stepPosition: StepPosition) => {
+                    return stepPosition.step === firstStep && stepPosition.instructionPosition === instructionIndex;
+                });
+
+                if (stepsTillLoop !== -1) {
+                    return new Loop(stepsSeen.length - stepsTillLoop, stepsTillZ);
+                }
+
+                stepsSeen.push({
+                    step: firstStep,
+                    instructionPosition: instructionIndex
+                });
+
+                firstStep = firstStep.getNextStep(instructionList[instructionIndex], steps);
+            }
+        }
+    }
 }
 
 class Step {
@@ -121,6 +116,15 @@ class Step {
         this.right = line.split('=')[1].trim().split(', ')[1].substring(0,3);
     }
 
+    getNextStep(instruction: string, steps: Step[]): Step {
+        if (instruction === 'L') {
+            return Step.search(steps, this.left)!;
+        }else if(instruction === 'R'){
+            return Step.search(steps, this.right)!;
+        }
+        throw new Error("Invalid instruction");
+    }
+
     static compare(a: Step, b: Step): number {
         if (a.self < b.self) {
             return -1;
@@ -131,14 +135,14 @@ class Step {
         return 0;
     }
 
-    static search(steps: Step[], self: string): Step | null {
+    static search(steps: Step[], search: string): Step | null {
         let start: number = 0;
         let end: number = steps.length-1;
         let middle: number = Math.floor((start+end)/2);
         while(start <= end){
-            if(steps[middle].self === self){
+            if(steps[middle].self === search){
                 return steps[middle];
-            }else if(steps[middle].self < self){
+            }else if(steps[middle].self < search){
                 start = middle+1;
             }else{
                 end = middle-1;
