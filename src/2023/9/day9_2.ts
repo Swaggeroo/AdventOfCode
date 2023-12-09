@@ -1,55 +1,62 @@
 import { getDayData } from "../../getDayData";
 
 getDayData(2023, 9).then((result: string) => {
-    let solution: number = 0;
-
     let lines = result.split('\n');
     lines.pop();
 
-    let data: DataLine[][] = [];
-
-    let iniDataLines = lines.map((line: string): DataLine => {
-        let dataLine:number[] = line.split(' ').map((number: string) => parseInt(number));
-        return {numbers:dataLine};
+    let iniDataLines: DataLine[] = lines.map((line: string): DataLine => {
+        return new DataLine(line);
     });
 
-    for (let i = 0; i < iniDataLines.length; i++) {
-        data.push([]);
-        data[i].push(iniDataLines[i]);
+    let dataSets: DataSet[] = [];
+
+    iniDataLines.forEach((dataLine: DataLine) => {dataSets.push(new DataSet(dataLine))});
+
+    dataSets.forEach((dataSet: DataSet) => {dataSet.fillDataLines()});
+
+    console.log(dataSets.reduce((acc: number, dataSet: DataSet) => acc + dataSet.extrapolate(false), 0));
+});
+
+class DataLine{
+    numbers: number[];
+
+    constructor(line: string) {
+        this.numbers = line.split(' ').map((number: string) => parseInt(number));
+    }
+}
+
+class DataSet{
+    dataLines: DataLine[] = [];
+
+    constructor(dataLines: DataLine) {
+        this.dataLines.push(dataLines);
     }
 
-    for (let i = 0; i < data.length; i++) {
-        let currentLine: DataLine = data[i][0];
-        let allZero: boolean = false;
-        while (!allZero) {
-            let newLine: DataLine = {numbers:[]};
+    fillDataLines() {
+        let currentLine: DataLine = this.dataLines[0];
+        let newLine: DataLine = {numbers:[]};
+        do {
+            newLine = {numbers:[]};
             for (let j = 0; j <= currentLine.numbers.length-2; j++) {
                 newLine.numbers.push(currentLine.numbers[j+1] - currentLine.numbers[j]);
             }
-            if (newLine.numbers.every((number: number) => number === 0)) {
-                allZero = true;
-            }
             currentLine = newLine;
-            data[i].push(newLine);
-        }
+            this.dataLines.push(newLine);
+        }while (!newLine.numbers.every((number: number) => number === 0));
     }
 
-    for (let i = 0; i < data.length; i++) {
-        let currentSet: DataLine[] = data[i];
-
+    extrapolate(right: boolean): number{
         let nextNumber: number = 0;
-        for (let j = currentSet.length-2; j >= 0; j--) {
-            nextNumber = currentSet[j].numbers[0] - nextNumber;
+        for (let j = this.dataLines.length-2; j >= 0; j--) {
+            if (right){
+                nextNumber += this.dataLines[j].numbers[this.dataLines[j].numbers.length-1];
+            }else {
+                nextNumber = this.dataLines[j].numbers[0] - nextNumber;
+            }
         }
 
-        solution += nextNumber;
+        return  nextNumber;
     }
-
-    console.log(solution);
-});
-
-interface DataLine{
-    numbers: number[];
 }
 
 export {}
