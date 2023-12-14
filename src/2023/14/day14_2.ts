@@ -4,10 +4,11 @@ getDayData(2023, 14).then((result: string) => {
 
     let platform: Platform = new Platform(result.trim());
 
-    for (let i = 0; i < 1000000000; i++){
-        let spaceCache = platform.spinCache.find((cacheLine: CacheLine) => arraysAreEqual(cacheLine.space, platform.space));
-        if (spaceCache){
-            let cacheIndex = ((1000000000 - spaceCache.pos) % (i - spaceCache.pos))+spaceCache.pos;
+    let spins: number = 1000000000;
+    for (let i = 0; i < spins; i++){
+        let spinCacheLine = platform.spinCache.find((cacheLine: CacheLine) => arraysAreEqual(cacheLine.space, platform.space));
+        if (spinCacheLine){
+            let cacheIndex = ((spins - spinCacheLine.pos) % (i - spinCacheLine.pos))+spinCacheLine.pos;
             platform.space = platform.spinCache.find((cacheLine: CacheLine) => cacheLine.pos === cacheIndex)!.space;
             break;
         }else{
@@ -27,29 +28,22 @@ class Platform{
     }
 
     getLoadNorthBeam(): number{
-        let load: number = 0;
-        for (let y = 0; y < this.space.length; y++){
-            for (let x = 0; x < this.space[0].length; x++){
-                if (this.space[y][x] === 'O'){
-                    load += this.space.length - y;
-                }
-            }
-        }
-        return load;
+        return this.space.reduce((acc, row, y) =>
+            acc + row.reduce((acc, cell) =>
+                acc + (cell === 'O' ? this.space.length - y : 0), 0
+            ), 0
+        );
     }
 
     spinCycle(pos: number): void{
-        let cacheLine: CacheLine = {
+        this.spinCache.push({
             space: this.space.map(subArray => [...subArray]),
-            newSpace: [],
             pos: pos
-        };
+        });
         this.tiltNorth();
         this.tiltWest();
         this.tiltSouth();
         this.tiltEast();
-        cacheLine.newSpace = this.space.map(subArray => [...subArray]);
-        this.spinCache.push(cacheLine);
     }
 
     tiltNorth(): void {
@@ -131,7 +125,6 @@ function arraysAreEqual(array1: any[][], array2: any[][]): boolean {
 
 interface CacheLine{
     space: string[][];
-    newSpace: string[][];
     pos: number;
 }
 
