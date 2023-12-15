@@ -7,13 +7,13 @@ getDayData(2023, 15).then((result: string) => {
     result.trim().split(',').forEach(line => {
         if (line.split('').find(char => char === '-')){
             let label: string = line.split('-')[0];
-            let lenses: Lens[] = hashmap.get(label) || [];
-
-            if (lenses.length === 0){
+            if (!hashmap.has(label)){
                 return;
             }
 
-            let pos = lenses.findIndex(lens => lens.label === label);
+            let lenses: Lens[] = hashmap.get(label)!;
+
+            let pos: number = lenses.findIndex(lens => lens.label === label);
             (pos !== -1) ? lenses.splice(pos, 1) : null;
 
             if (lenses.length === 0){
@@ -38,12 +38,11 @@ getDayData(2023, 15).then((result: string) => {
     });
 
     for (let i = 0; i <= 255; i++){
-        let lenses: Lens[] = hashmap.getByHash(i) || [];
-        if (lenses.length === 0){
+        if (!hashmap.hasByHash(i)){
             continue;
         }
 
-        solution += lenses.reduce((acc, lens, index) => acc + (i+1)*(index+1)*lens.focalLength, 0);
+        solution += hashmap.getByHash(i)!.reduce((acc, lens, index) => acc + (i+1)*(index+1)*lens.focalLength, 0);
     }
 
     console.log(solution);
@@ -80,8 +79,16 @@ class HolidayASCIIStringHelperManualArrangementProcedure<T>{
         delete this.map[holidayASCIIStringHelperAlgorithm(key)];
     }
 
+    deleteByHash(hash: number){
+        delete this.map[hash];
+    }
+
     has(key: string): boolean{
         return this.map.hasOwnProperty(holidayASCIIStringHelperAlgorithm(key));
+    }
+
+    hasByHash(hash: number): boolean{
+        return this.map.hasOwnProperty(hash);
     }
 
     clear(){
