@@ -35,7 +35,10 @@
     "day14_1": "ts-node src/2023/14/day14_1.ts",
     "day14_2": "ts-node src/2023/14/day14_2.ts",
     "day15_1": "ts-node src/2023/15/day15_1.ts",
-    "day15_2": "ts-node src/2023/15/day15_2.ts"
+    "day15_2": "ts-node src/2023/15/day15_2.ts",
+    "day16_1": "ts-node src/2023/16/day16_1.ts",
+    "day16_2": "ts-node src/2023/16/day16_2.ts",
+    "day17_1": "tsc && node --stack-size=10000 dist/2023/17/day17_1.js"
   },
   "author": "",
   "license": "ISC",

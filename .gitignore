@@ -2,3 +2,4 @@ node_modules
 days
 .idea
 *.iml
+dist
