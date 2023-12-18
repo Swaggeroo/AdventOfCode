@@ -187,7 +187,7 @@ class Grid {
         }
 
         const buffer = canvas.toBuffer("image/png");
-        fs.writeFileSync("./visu/image.png", buffer);
+        fs.writeFileSync("./visu/day18_1.png", buffer);
     }
 }
 

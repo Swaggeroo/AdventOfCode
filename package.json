@@ -41,7 +41,7 @@
     "day17_1": "ts-node src/2023/17/day17_1.ts",
     "day17_2": "ts-node src/2023/17/day17_2.ts",
     "day18_1": "tsc && node --stack-size=10000 dist/2023/18/day18_1.js",
-    "day18_2": "tsc && node --stack-size=10000 dist/2023/18/day18_2.js"
+    "day18_2": "ts-node src/2023/18/day18_2.ts"
   },
   "author": "",
   "license": "ISC",
