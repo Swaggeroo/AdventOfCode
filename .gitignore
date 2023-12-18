@@ -3,3 +3,4 @@ days
 .idea
 *.iml
 dist
+/visu/*.png

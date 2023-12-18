@@ -38,7 +38,10 @@
     "day15_2": "ts-node src/2023/15/day15_2.ts",
     "day16_1": "ts-node src/2023/16/day16_1.ts",
     "day16_2": "ts-node src/2023/16/day16_2.ts",
-    "day17_1": "ts-node src/2023/17/day17_1.ts"
+    "day17_1": "ts-node src/2023/17/day17_1.ts",
+    "day17_2": "ts-node src/2023/17/day17_2.ts",
+    "day18_1": "tsc && node --stack-size=10000 dist/2023/18/day18_1.js",
+    "day18_2": "tsc && node --stack-size=10000 dist/2023/18/day18_2.js"
   },
   "author": "",
   "license": "ISC",
@@ -46,5 +49,9 @@
     "@types/node": "^20.10.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "chalk": "^4.1.2"
   }
 }
