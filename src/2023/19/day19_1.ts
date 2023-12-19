@@ -51,50 +51,38 @@ class Workflow {
         rawSteps = rawSteps.substring(0, rawSteps.length-1);
         let stepsArray: Step[] = rawSteps.split(',').map((step: string) => {
             if (step.includes(':')){
-                let category: PartCategory = step.split(/[><]/)[0].trim() as PartCategory;
-                let greaterThan: boolean = step.includes('<');
-                let value: number = Number(step.split(/[><]/)[1].split(':')[0]);
-                let actionString: string = step.split(':')[1].trim();
-                let action: Action | End;
-                if (actionString === 'A' || actionString === 'R'){
-                    action = {
-                        accepted: actionString === 'A'
-                    }
-                }else {
-                    action = {
-                        nextStep: actionString
-                    }
-                }
-
                 return {
-                    Category: category,
-                    value: value,
-                    greaterThan: greaterThan,
-                    action: action
+                    Category: step.split(/[><]/)[0].trim() as PartCategory,
+                    value: Number(step.split(/[><]/)[1].split(':')[0]),
+                    greaterThan: step.includes('<'),
+                    action: this.stringToAction(step.split(':')[1].trim())
                 }
             }else {
-                let action: Action | End;
-                if (step === 'A' || step === 'R'){
-                    action = {
-                        accepted: step === 'A'
-                    }
-                }else {
-                    action = {
-                        nextStep: step
-                    }
-                }
-
                 return {
                     Category: null,
                     value: null,
                     greaterThan: null,
-                    action: action
+                    action: this.stringToAction(step)
                 }
             }
         });
 
         this.name = name;
         this.steps = stepsArray;
+    }
+
+    stringToAction(s: string): Action | End {
+        let action: Action | End;
+        if (s === 'A' || s === 'R'){
+            action = {
+                accepted: s === 'A'
+            }
+        }else {
+            action = {
+                nextStep: s
+            }
+        }
+        return action;
     }
 
     nextAction(part: Part): Action | End {
