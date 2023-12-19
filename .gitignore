@@ -4,3 +4,4 @@ days
 *.iml
 dist
 /visu/*.png
+/visu/*.txt

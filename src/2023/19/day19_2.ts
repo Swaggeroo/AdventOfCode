@@ -1,12 +1,13 @@
 import {getDayData} from "../../getDayData";
 import fs from "node:fs";
 
+//Output Visualisation
+//Paste output from visu/19_2.txt into https://sankeymatic.com/build/
+
 getDayData(2023, 19).then((result: string) => {
     let workflows: Workflow[] = result.trim().split('\n\n')[0]
         .split('\n')
         .map((workflow: string) => new Workflow(workflow));
-
-    let solution = 0;
 
     let parts: PartPossibility = {
         x: [1, 4000],
@@ -16,9 +17,8 @@ getDayData(2023, 19).then((result: string) => {
     }
 
     let startWorkflow = workflows.find((workflow: Workflow) => workflow.name === 'in')!;
-    solution = Workflow.getPossibilities(workflows, startWorkflow, parts);
 
-    console.log(solution);
+    console.log(Workflow.getPossibilities(workflows, startWorkflow, parts));
 });
 
 interface PartPossibility {
@@ -99,17 +99,25 @@ class Workflow {
                 let newPossible: PartPossibility = this.copyPossible(possible);
                 this.setValue(newPossible, step.Category, !step.greaterThan!, step.greaterThan! ? step.value!-1 : step.value!+1);
                 if (isAction(step.action)){
+                    this.visualizePossibilities(current.name, this.getTotalPossibilities(newPossible), (step.action as Action).nextStep);
                     total += this.getPossibilities(workflows, workflows.find((workflow: Workflow) => workflow.name === (step.action as Action).nextStep)!, newPossible);
                 }else if(step.action.accepted){
+                    this.visualizePossibilities(current.name, this.getTotalPossibilities(newPossible), 'A');
                     total += this.getTotalPossibilities(newPossible);
+                }else {
+                    this.visualizePossibilities(current.name, this.getTotalPossibilities(newPossible), 'R');
                 }
 
                 this.setValue(possible, step.Category, step.greaterThan!, step.value!);
             }else {
                 if (!isAction(step.action) && step.action.accepted){
+                    this.visualizePossibilities(current.name, this.getTotalPossibilities(possible), 'A');
                     total += this.getTotalPossibilities(possible);
                 }else if (isAction(step.action)){
+                    this.visualizePossibilities(current.name, this.getTotalPossibilities(possible), (step.action as Action).nextStep);
                     total += this.getPossibilities(workflows, workflows.find((workflow: Workflow) => workflow.name === (step.action as Action).nextStep)!, possible);
+                }else{
+                    this.visualizePossibilities(current.name, this.getTotalPossibilities(possible), 'R');
                 }
             }
         }
@@ -117,7 +125,9 @@ class Workflow {
         return total;
     }
 
-
+    static visualizePossibilities(src: string, possibilities: number, to: string): void{
+        fs.appendFileSync('./visu/19_2.txt', `${src} [${possibilities}] ${to}\n`);
+    }
 
     static copyPossible(possible: PartPossibility): PartPossibility{
         return {
