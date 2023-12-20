@@ -2,10 +2,10 @@
   "name": "aovtest",
   "version": "0.1.0",
   "description": "",
-  "main": "app.ts",
+  "main": "runner.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/app.ts",
+    "start": "ts-node src/runner.ts",
     "day1_1": "ts-node src/2023/1/day1_1.ts",
     "day1_2": "ts-node src/2023/1/day1_2.ts",
     "day2_1": "ts-node src/2023/2/day2_1.ts",
@@ -43,7 +43,9 @@
     "day18_1": "tsc && node --stack-size=10000 dist/2023/18/day18_1.js",
     "day18_2": "ts-node src/2023/18/day18_2.ts",
     "day19_1": "ts-node src/2023/19/day19_1.ts",
-    "day19_2": "ts-node src/2023/19/day19_2.ts"
+    "day19_2": "ts-node src/2023/19/day19_2.ts",
+    "day20_1": "ts-node src/2023/20/day20_1.ts",
+    "day20_2": "ts-node src/2023/20/day20_2.ts"
   },
   "author": "",
   "license": "ISC",
