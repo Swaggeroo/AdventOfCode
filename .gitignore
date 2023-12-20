@@ -5,3 +5,4 @@ days
 dist
 /visu/*.png
 /visu/*.txt
+/src/**/*.js
