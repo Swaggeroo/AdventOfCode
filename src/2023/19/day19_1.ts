@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 
 getDayData(2023, 19).then((result: string) => {
     let [workflowInput, partInput] = result.trim().split('\n\n');

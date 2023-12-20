@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 
 getDayData(2023, 11).then((result: string) => {
     const universe: Universe = new Universe(result);

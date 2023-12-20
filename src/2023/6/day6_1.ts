@@ -1,4 +1,4 @@
-import { getDayData } from "../../getDayData";
+import { getDayData } from "../../util/getDayData";
 
 getDayData(2023,6).then((result: string) => {
     let solultion: number = 1;

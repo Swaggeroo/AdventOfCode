@@ -1,4 +1,4 @@
-import { getDayData } from "../../getDayData";
+import { getDayData } from "../../util/getDayData";
 
 getDayData(2023,5).then((result: string) => {
     let seeds: number[];

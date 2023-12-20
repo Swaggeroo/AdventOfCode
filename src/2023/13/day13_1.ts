@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 
 getDayData(2023, 13).then((result: string) => {
     let patterns: Pattern[] = result.trim().split('\n\n').map((pattern: string) => new Pattern(pattern));

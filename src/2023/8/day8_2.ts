@@ -1,4 +1,4 @@
-import { getDayData } from "../../getDayData";
+import { getDayData } from "../../util/getDayData";
 
 getDayData(2023,8).then((result: string) => {
     let lines: string[] = result.split('\n');

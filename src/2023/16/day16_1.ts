@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 
 getDayData(2023, 16).then((result: string) => {
     let field: Tile[][] = result.trim().split('\n')

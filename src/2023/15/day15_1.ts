@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 
 getDayData(2023, 15).then((result: string) => {
     console.log(result.trim().split(',').reduce((acc, val) => acc + holidayASCIIStringHelperAlgorithm(val), 0));

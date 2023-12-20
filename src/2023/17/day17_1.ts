@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 
 let minSum: number = Infinity;
 let possibleDirections: PossibleDirections = {up: true, right: true, down: true, left: true};

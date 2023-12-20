@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 import chalk from 'chalk';
 import {createCanvas} from "canvas";
 import fs from "node:fs";

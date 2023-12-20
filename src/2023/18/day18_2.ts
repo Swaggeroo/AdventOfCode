@@ -1,4 +1,4 @@
-import {getDayData} from "../../getDayData";
+import {getDayData} from "../../util/getDayData";
 import chalk from 'chalk';
 
 getDayData(2023, 18).then((result: string) => {
