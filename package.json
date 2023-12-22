@@ -47,7 +47,9 @@
     "day20_1": "ts-node src/2023/20/day20_1.ts",
     "day20_2": "ts-node src/2023/20/day20_2.ts",
     "day21_1": "ts-node src/2023/21/day21_1.ts",
-    "day21_2": "ts-node src/2023/21/day21_2.ts"
+    "day21_2": "ts-node src/2023/21/day21_2.ts",
+    "day22_1": "ts-node src/2023/22/day22_1.ts",
+    "day22_2": "ts-node src/2023/22/day22_2.ts"
   },
   "author": "",
   "license": "ISC",
