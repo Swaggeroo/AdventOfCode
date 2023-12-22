@@ -63,7 +63,7 @@ class Brick {
                 }
                 let maxZ = Math.max(testBrick.start.z, testBrick.end.z);
 
-                if (maxZ+1 === z && ((intersects(this.start.x, this.start.y, this.end.x, this.end.y, testBrick.start.x, testBrick.start.y, testBrick.end.x, testBrick.end.y) || linePoint(this.start.x, this.start.y, this.end.x, this.end.y, testBrick.start.x, testBrick.start.y) || linePoint(testBrick.start.x, testBrick.start.y, testBrick.end.x, testBrick.end.y, this.end.x, this.end.y)))){
+                if (maxZ+1 === z && (intersects(this.start.x, this.start.y, this.end.x, this.end.y, testBrick.start.x, testBrick.start.y, testBrick.end.x, testBrick.end.y) || linePoint(this.start.x, this.start.y, this.end.x, this.end.y, testBrick.start.x, testBrick.start.y) || linePoint(testBrick.start.x, testBrick.start.y, testBrick.end.x, testBrick.end.y, this.end.x, this.end.y) || (testBrick.start.x === this.start.x && testBrick.start.y === this.start.y))) {
                     this.dependencies.push(testBrick);
                     testBrick.supports.push(this);
                 }
